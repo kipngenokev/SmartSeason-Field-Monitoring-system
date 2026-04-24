@@ -16,13 +16,15 @@ const initDB = async () => {
 
   await pool.execute(`
     CREATE TABLE IF NOT EXISTS fields (
-      id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
-      name       VARCHAR(150) NOT NULL,
-      location   VARCHAR(255) NOT NULL,
-      size_ha    DECIMAL(10,2) NOT NULL,
-      status     ENUM('Active','Inactive') NOT NULL DEFAULT 'Active',
-      agent_id   INT UNSIGNED DEFAULT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      id            INT UNSIGNED  NOT NULL AUTO_INCREMENT,
+      name          VARCHAR(150)  NOT NULL,
+      crop_type     VARCHAR(100)  DEFAULT NULL,
+      planting_date DATE          DEFAULT NULL,
+      location      VARCHAR(255)  NOT NULL,
+      size_ha       DECIMAL(10,2) NOT NULL,
+      status        ENUM('Active','Inactive') NOT NULL DEFAULT 'Active',
+      agent_id      INT UNSIGNED  DEFAULT NULL,
+      created_at    TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (id),
       CONSTRAINT fk_fields_agent FOREIGN KEY (agent_id) REFERENCES users(id) ON DELETE SET NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
