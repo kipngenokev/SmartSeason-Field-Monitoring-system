@@ -11,14 +11,18 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-const testConnection = async () => {
-  try {
-    const conn = await pool.getConnection();
-    console.log('MySQL connected successfully');
-    conn.release();
-  } catch (err) {
-    console.error('MySQL connection failed:', err.message);
-    process.exit(1);
+const testConnection = async (retries = 5, delayMs = 3000) => {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const conn = await pool.getConnection();
+      console.log('MySQL connected successfully');
+      conn.release();
+      return;
+    } catch (err) {
+      console.error(`MySQL connection attempt ${attempt}/${retries} failed:`, err);
+      if (attempt === retries) process.exit(1);
+      await new Promise(r => setTimeout(r, delayMs));
+    }
   }
 };
 
