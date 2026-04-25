@@ -131,7 +131,7 @@ export default function FieldDetailPage() {
     <div className="space-y-6">
 
       {/* Top bar */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Link
           to={backTo}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 transition-colors hover:text-slate-900"

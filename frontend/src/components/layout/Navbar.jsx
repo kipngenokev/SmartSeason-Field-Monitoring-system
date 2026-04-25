@@ -1,9 +1,9 @@
-import { Bell, Search, ChevronDown, LogOut, Settings } from 'lucide-react';
+import { Bell, Search, ChevronDown, LogOut, Settings, Menu } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-export default function Navbar({ title = 'Dashboard' }) {
+export default function Navbar({ title = 'Dashboard', onMenuClick = () => {} }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -29,23 +29,32 @@ export default function Navbar({ title = 'Dashboard' }) {
   const isAdmin = user?.role === 'Admin';
 
   return (
-    <header className="fixed left-64 right-0 top-0 z-30 flex h-16 items-center justify-between border-b border-slate-100 bg-white/95 px-6 backdrop-blur-sm">
+    <header className="fixed left-0 right-0 top-0 z-30 flex h-16 items-center justify-between border-b border-slate-100 bg-white/95 px-4 backdrop-blur-sm sm:px-6 lg:left-64">
 
-      {/* Left — page title */}
-      <div>
-        <h1 className="text-[15px] font-semibold text-slate-900">{title}</h1>
-        <p className="mt-0.5 text-xs text-slate-400">
-          {new Date().toLocaleDateString('en-US', {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-          })}
-        </p>
+      {/* Left — hamburger + page title */}
+      <div className="flex min-w-0 items-center gap-3">
+        <button
+          onClick={onMenuClick}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition-all hover:border-slate-300 hover:bg-slate-50 lg:hidden"
+          aria-label="Open menu"
+        >
+          <Menu className="h-4 w-4" strokeWidth={2} />
+        </button>
+        <div className="min-w-0">
+          <h1 className="truncate text-[15px] font-semibold text-slate-900">{title}</h1>
+          <p className="mt-0.5 hidden text-xs text-slate-400 sm:block">
+            {new Date().toLocaleDateString('en-US', {
+              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+            })}
+          </p>
+        </div>
       </div>
 
       {/* Right — actions */}
-      <div className="flex items-center gap-2">
+      <div className="flex shrink-0 items-center gap-2">
 
-        {/* Search */}
-        <button className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-400 transition-all hover:border-slate-300 hover:bg-white hover:text-slate-600">
+        {/* Search — hidden on small mobile */}
+        <button className="hidden items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm text-slate-400 transition-all hover:border-slate-300 hover:bg-white hover:text-slate-600 md:flex">
           <Search className="h-3.5 w-3.5" strokeWidth={2} />
           <span className="hidden sm:inline">Search...</span>
           <kbd className="ml-1 hidden rounded bg-white px-1.5 py-0.5 text-[10px] font-medium text-slate-400 shadow-sm ring-1 ring-slate-200 sm:inline">
@@ -59,7 +68,7 @@ export default function Navbar({ title = 'Dashboard' }) {
           <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-emerald-500 ring-1 ring-white" />
         </button>
 
-        <div className="mx-1 h-6 w-px bg-slate-200" />
+        <div className="mx-1 hidden h-6 w-px bg-slate-200 sm:block" />
 
         {/* User menu */}
         <div className="relative" ref={menuRef}>

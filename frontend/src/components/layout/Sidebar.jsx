@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard, MapPin, Users, ClipboardList, Leaf,
+  LayoutDashboard, MapPin, Users, ClipboardList, Leaf, X,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -16,20 +16,24 @@ const agentNav = [
   { to: '/updates',   icon: ClipboardList,   label: 'My Updates' },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ open = false, onClose = () => {} }) {
   const { user } = useAuth();
   const navItems = user?.role === 'Admin' ? adminNav : agentNav;
   const isAdmin  = user?.role === 'Admin';
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-slate-950">
+    <aside
+      className={`fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-slate-950 transition-transform duration-200 lg:translate-x-0 ${
+        open ? 'translate-x-0' : '-translate-x-full'
+      }`}
+    >
 
       {/* Logo */}
       <div className="flex h-16 shrink-0 items-center gap-3 border-b border-white/[0.06] px-5">
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-400 to-green-600 shadow-lg shadow-emerald-900/40">
           <Leaf className="h-4 w-4 text-white" strokeWidth={2.5} />
         </div>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <p className="truncate text-[15px] font-bold tracking-tight text-white">SmartSeason</p>
           <span className={`mt-0.5 inline-block rounded px-1.5 py-0.5 text-[10px] font-semibold ${
             isAdmin
@@ -39,6 +43,14 @@ export default function Sidebar() {
             {isAdmin ? 'Administrator' : 'Field Agent'}
           </span>
         </div>
+        {/* Mobile close button */}
+        <button
+          onClick={onClose}
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-white lg:hidden"
+          aria-label="Close menu"
+        >
+          <X className="h-4 w-4" strokeWidth={2} />
+        </button>
       </div>
 
       {/* Nav */}
@@ -52,6 +64,7 @@ export default function Sidebar() {
             <NavLink
               key={to}
               to={to}
+              onClick={onClose}
               className={({ isActive }) =>
                 `group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
                   isActive

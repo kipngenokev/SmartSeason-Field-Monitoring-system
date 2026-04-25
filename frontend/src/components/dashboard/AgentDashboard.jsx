@@ -162,7 +162,7 @@ export default function AgentDashboard() {
     <div className="space-y-8">
 
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5">
             <h2 className="text-2xl font-black tracking-tight text-slate-900">
