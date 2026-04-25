@@ -2,7 +2,7 @@
   "name": "smartseason",
   "version": "1.0.0",
   "scripts": {
-    "build": "cd frontend && npm ci && npm run build",
+    "build": "npm ci --prefix backend && npm ci --prefix frontend && npm run build --prefix frontend",
     "start": "node backend/server.js"
   },
   "engines": {

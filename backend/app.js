@@ -24,7 +24,7 @@ app.use('/api', routes);
 if (process.env.NODE_ENV === 'production') {
   const clientBuild = path.join(__dirname, '../frontend/dist');
   app.use(express.static(clientBuild));
-  app.get('*', (_req, res) => res.sendFile(path.join(clientBuild, 'index.html')));
+  app.use((_req, res) => res.sendFile(path.join(clientBuild, 'index.html')));
 } else {
   app.use(notFound);
 }
